@@ -9,11 +9,39 @@
         android:id="@+id/home_menu"
         android:name="com.antoniocostadossantos.githubapirepositories.ui.fragments.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_home_menu_to_fragment_description_repository"
+            app:destination="@id/fragment_description_repository" />
+    </fragment>
 
     <fragment
         android:id="@+id/search_user_menu"
         android:name="com.antoniocostadossantos.githubapirepositories.ui.fragments.SearchUserFragment"
         android:label="fragment_search_user"
         tools:layout="@layout/fragment_search_user" />
+    <fragment
+        android:id="@+id/fragment_commits"
+        android:name="com.antoniocostadossantos.githubapirepositories.ui.fragments.CommitsFragment"
+        android:label="fragment_commits"
+        tools:layout="@layout/fragment_commits" />
+    <fragment
+        android:id="@+id/fragment_issues"
+        android:name="com.antoniocostadossantos.githubapirepositories.ui.fragments.IssuesFragment"
+        android:label="fragment_issues"
+        tools:layout="@layout/fragment_issues" />
+    <fragment
+        android:id="@+id/fragment_license"
+        android:name="com.antoniocostadossantos.githubapirepositories.ui.fragments.LicenseFragment"
+        android:label="fragment_license"
+        tools:layout="@layout/fragment_license" />
+    <fragment
+        android:id="@+id/fragment_description_repository"
+        android:name="com.antoniocostadossantos.githubapirepositories.ui.fragments.DescriptionRepositoryFragment"
+        android:label="fragment_description_repository"
+        tools:layout="@layout/fragment_description_repository">
+        <argument
+            android:name="currentItemData"
+            app:argType="com.antoniocostadossantos.githubapirepositories.model.repo.Item" />
+    </fragment>
 </navigation>
