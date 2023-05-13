@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.antoniocostadossantos.githubapirepositories.databinding.FragmentHomeBinding
 import com.antoniocostadossantos.githubapirepositories.model.repo.Item
 import com.antoniocostadossantos.githubapirepositories.ui.adapter.RepositoriesAdapter
@@ -18,6 +20,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeFragment : Fragment() {
 
+    private var pageIndex = 2
     private lateinit var binding: FragmentHomeBinding
     private lateinit var repositoriesAdapter: RepositoriesAdapter
     private val mainViewModel: MainViewModel by viewModel()
@@ -36,6 +39,29 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
         searchBar()
+        paging()
+    }
+
+    private fun paging() {
+        val recyclerView = binding.homeRecyclerView
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+                val lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition()
+                val totalItemCount = layoutManager.itemCount
+
+                if (lastVisibleItemPosition == totalItemCount - 1 && totalItemCount >= 20) {
+
+                    mainViewModel.getAllRepositories(
+                        language = "Kotlin",
+                        page = pageIndex
+                    )
+                    observeResult()
+                    pageIndex++
+                }
+            }
+        })
     }
 
     private fun searchBar() {
@@ -54,6 +80,7 @@ class HomeFragment : Fragment() {
 
                 false -> {
                     binding.searchLabel.error = null
+                    repositoriesAdapter.clearItems()
                     mainViewModel.getAllRepositories(
                         language = searchInput,
                         page = 1
@@ -68,7 +95,7 @@ class HomeFragment : Fragment() {
         mainViewModel.repositories.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is StateResource.Success -> {
-                    repositoriesAdapter.setItems(response.data!!.items)
+                    repositoriesAdapter.updateData(response.data!!.items)
                 }
 
                 is StateResource.Loading -> {

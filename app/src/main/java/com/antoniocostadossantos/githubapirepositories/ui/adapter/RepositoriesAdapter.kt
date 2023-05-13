@@ -3,10 +3,12 @@ package com.antoniocostadossantos.githubapirepositories.ui.adapter
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.antoniocostadossantos.githubapirepositories.databinding.ItemRepositoryBinding
 import com.antoniocostadossantos.githubapirepositories.model.repo.Item
+import com.antoniocostadossantos.githubapirepositories.util.MyDiffUtilCallback
 
 class RepositoriesAdapter(
     private val context: Context,
@@ -31,9 +33,20 @@ class RepositoriesAdapter(
         }
     }
 
-    fun setItems(list: List<Item>) {
-        items = list.toMutableList()
+    fun clearItems() {
+        items.clear()
+    }
+
+    fun updateData(newList: List<Item>) {
+        val diffResult = DiffUtil.calculateDiff(MyDiffUtilCallback(items, newList))
+        items.addAll(newList)
+        diffResult.dispatchUpdatesTo(this)
         notifyDataSetChanged()
+    }
+
+    fun setItems(list: List<Item>) {
+        items.addAll(list.toMutableList())
+        notifyItemRangeInserted(items.lastIndex, list.size)
     }
 }
 
