@@ -1,16 +1,23 @@
 package com.antoniocostadossantos.githubapirepositories
 
+import com.antoniocostadossantos.githubapirepositories.validation.ModelValidation
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
-/**
- * Example local unit test, which will execute on the development machine (host).
- *
- * See [testing documentation](http://d.android.com/tools/testing).
- */
 class ExampleUnitTest {
+
+    private val modelValidation = ModelValidation()
+
     @Test
-    fun addition_isCorrect() {
-        assertEquals(4, 2 + 2)
+    fun languageIsNotEmpty() {
+        val test = modelValidation.checkLanguage("Kotlin")
+//        assertEquals(false, test)
+        assertEquals(false, test)
+    }
+
+    @Test
+    fun languageIsEmpty() {
+        val test = modelValidation.checkLanguage("")
+        assertEquals(true, test)
     }
 }

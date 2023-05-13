@@ -1,6 +1,5 @@
 package com.antoniocostadossantos.githubapirepositories.ui.fragments
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,8 +8,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.antoniocostadossantos.githubapirepositories.databinding.FragmentLicenseBinding
 import com.antoniocostadossantos.githubapirepositories.model.license.LicenseRequest
-import com.antoniocostadossantos.githubapirepositories.ui.WebViewActivity
 import com.antoniocostadossantos.githubapirepositories.util.StateResource
+import com.antoniocostadossantos.githubapirepositories.util.startLink
 import com.antoniocostadossantos.githubapirepositories.viewModel.MainViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -40,11 +39,7 @@ class LicenseFragment : Fragment() {
 
     private fun viewLicense(item: LicenseRequest) {
         binding.licenseTitle.setOnClickListener {
-            startActivity(
-                Intent(requireContext(), WebViewActivity::class.java).apply {
-                    putExtra("URL", item.html_url)
-                }
-            )
+            startLink(item.html_url)
         }
     }
 

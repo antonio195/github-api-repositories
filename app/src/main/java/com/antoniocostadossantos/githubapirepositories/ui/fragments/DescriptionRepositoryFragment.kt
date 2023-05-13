@@ -40,7 +40,7 @@ class DescriptionRepositoryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setData()
+        getRepository()
         initViewPager()
     }
 
@@ -93,15 +93,15 @@ class DescriptionRepositoryFragment : Fragment() {
         return fragments
     }
 
-    private fun setData() {
+    private fun getRepository() {
         owner = arguments?.getString("OWNER_REPOSITORY")!!
         repositoryName = arguments?.getString("NAME_REPOSITORY")!!
 
         mainViewModel.getUserRepository(owner = owner, repositoryName = repositoryName)
-        getRepository()
+        observeResults()
     }
 
-    private fun getRepository() {
+    private fun observeResults() {
         mainViewModel.userRepository.observe(requireActivity()) { response ->
             when (response) {
                 is StateResource.Success -> {

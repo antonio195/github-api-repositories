@@ -3,7 +3,7 @@ package com.antoniocostadossantos.githubapirepositories.repository
 import com.antoniocostadossantos.githubapirepositories.remote.RetrofitClient
 import com.antoniocostadossantos.githubapirepositories.remote.api.GithubAPI
 
-class MainRepository() {
+class MainRepository {
 
     private val retrofitClient = RetrofitClient.getService(GithubAPI::class.java)
 
@@ -12,7 +12,8 @@ class MainRepository() {
         page: Int,
     ) = retrofitClient.getRepositories(
         language = language,
-        page = page
+        page = page,
+        perPage = 20
     )
 
     suspend fun getRepository(
@@ -45,6 +46,12 @@ class MainRepository() {
     ) = retrofitClient.getLicense(
         owner = owner,
         repositoryName = repositoryName
+    )
+
+    suspend fun getUser(
+        owner: String,
+    ) = retrofitClient.getUser(
+        owner = owner,
     )
 
 

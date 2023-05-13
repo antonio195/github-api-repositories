@@ -7,13 +7,48 @@
     tools:context=".ui.fragments.SearchUserFragment">
 
     <TextView
-        android:layout_width="wrap_content"
+        android:id="@+id/title_search_users"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Search user"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/montserrat_medium"
+        android:text="Search Users"
+        android:textAlignment="center"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/search_label"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="16dp"
+        app:endIconDrawable="@drawable/baseline_search_24"
+        app:endIconMode="custom"
+        app:layout_constraintBottom_toTopOf="@id/users_recycler_view"
+        app:layout_constraintTop_toBottomOf="@id/title_search_users">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/search_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/input_label_search"
+            android:text="antonio195" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/users_recycler_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="8dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/search_label"
+        tools:listitem="@layout/item_user" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

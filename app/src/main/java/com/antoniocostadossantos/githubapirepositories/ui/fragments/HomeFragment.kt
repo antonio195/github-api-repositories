@@ -12,6 +12,7 @@ import com.antoniocostadossantos.githubapirepositories.model.repo.Item
 import com.antoniocostadossantos.githubapirepositories.ui.adapter.RepositoriesAdapter
 import com.antoniocostadossantos.githubapirepositories.util.StateResource
 import com.antoniocostadossantos.githubapirepositories.util.startFragment
+import com.antoniocostadossantos.githubapirepositories.validation.ModelValidation
 import com.antoniocostadossantos.githubapirepositories.viewModel.MainViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -20,6 +21,7 @@ class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
     private lateinit var repositoriesAdapter: RepositoriesAdapter
     private val mainViewModel: MainViewModel by viewModel()
+    private val modelValidation = ModelValidation()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,7 +34,6 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         initRecyclerView()
         searchBar()
     }
@@ -42,20 +43,28 @@ class HomeFragment : Fragment() {
 
             val searchInput = binding.searchInput.text.toString()
 
-            if (searchInput.isNullOrEmpty()) {
-                Toast.makeText(requireContext(), "Digite a linguagem", Toast.LENGTH_SHORT).show()
-            } else {
-                binding.searchLabel.error = null
-                mainViewModel.getAllRepositories(
-                    language = searchInput,
-                    page = 1
-                )
-                observeResults()
+            when (modelValidation.checkLanguage(searchInput)) {
+                true -> {
+                    Toast.makeText(requireContext(), "Digite a linguagem", Toast.LENGTH_SHORT)
+                        .show()
+                    binding.searchLabel.errorIconDrawable = null
+                    binding.searchLabel.error = "Digite a linguagem"
+
+                }
+
+                false -> {
+                    binding.searchLabel.error = null
+                    mainViewModel.getAllRepositories(
+                        language = searchInput,
+                        page = 1
+                    )
+                    observeResult()
+                }
             }
         }
     }
 
-    private fun observeResults() {
+    private fun observeResult() {
         mainViewModel.repositories.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is StateResource.Success -> {

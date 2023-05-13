@@ -1,6 +1,5 @@
 package com.antoniocostadossantos.githubapirepositories.ui.fragments
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,9 +8,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.antoniocostadossantos.githubapirepositories.databinding.FragmentIssuesBinding
-import com.antoniocostadossantos.githubapirepositories.ui.WebViewActivity
 import com.antoniocostadossantos.githubapirepositories.ui.adapter.IssuesAdapter
 import com.antoniocostadossantos.githubapirepositories.util.StateResource
+import com.antoniocostadossantos.githubapirepositories.util.startLink
 import com.antoniocostadossantos.githubapirepositories.viewModel.MainViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -38,25 +37,25 @@ class IssuesFragment : Fragment() {
         owner = arguments?.getString("OWNER_REPOSITORY")!!
         repositoryName = arguments?.getString("NAME_REPOSITORY")!!
 
-        getIssues()
+
         initRecyclerView()
+        getIssues()
     }
 
     private fun initRecyclerView() {
         issuesAdapter = IssuesAdapter(requireContext(), accessIssueClick = { issueItem ->
-            startActivity(
-                Intent(requireContext(), WebViewActivity::class.java).apply {
-                    putExtra("URL", issueItem.html_url)
-                }
-            )
+//            startActivity(
+//                Intent(requireContext(), WebViewActivity::class.java).apply {
+//                    putExtra("URL", issueItem.html_url)
+//                }
+//            )
+            startLink(issueItem.html_url)
         })
-
         val recyclerView = binding.issuesRecyclerView
         recyclerView.adapter = issuesAdapter
     }
 
     private fun getIssues() {
-
         mainViewModel.getRepoIssues(owner = owner, repositoryName = repositoryName)
         observeResult()
     }
@@ -65,7 +64,7 @@ class IssuesFragment : Fragment() {
         mainViewModel.repoIssues.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is StateResource.Success -> {
-                    issuesAdapter.setItems(response.data!!)
+                    issuesAdapter.setItems(response.data!!.toList())
                 }
 
                 is StateResource.Loading -> {

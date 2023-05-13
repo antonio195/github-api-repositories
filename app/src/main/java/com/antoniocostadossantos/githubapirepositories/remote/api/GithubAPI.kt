@@ -5,6 +5,7 @@ import com.antoniocostadossantos.githubapirepositories.model.issues.Issues
 import com.antoniocostadossantos.githubapirepositories.model.license.LicenseRequest
 import com.antoniocostadossantos.githubapirepositories.model.repo.BaseRequest
 import com.antoniocostadossantos.githubapirepositories.model.repo.Item
+import com.antoniocostadossantos.githubapirepositories.model.user.User
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -14,8 +15,8 @@ interface GithubAPI {
 
     @GET("search/repositories?")
     suspend fun getRepositories(
-        @Query("page") page: Int = 1,
-        @Query("per_page") perPage: Int = 20,
+        @Query("page") page: Int,
+        @Query("per_page") perPage: Int,
         @Query("sort") sort: String = "stars",
         @Query("q") language: String
     ): Response<BaseRequest>
@@ -46,4 +47,10 @@ interface GithubAPI {
         @Path("repo") repositoryName: String,
         @Query("per_page") perPage: Int = 20
     ): Response<LicenseRequest>
+
+    @GET("users/{user}")
+    suspend fun getUser(
+        @Path("user") owner: String,
+        @Query("per_page") perPage: Int = 20
+    ): Response<User>
 }

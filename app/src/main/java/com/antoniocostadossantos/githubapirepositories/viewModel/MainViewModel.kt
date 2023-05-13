@@ -9,6 +9,7 @@ import com.antoniocostadossantos.githubapirepositories.model.issues.Issues
 import com.antoniocostadossantos.githubapirepositories.model.license.LicenseRequest
 import com.antoniocostadossantos.githubapirepositories.model.repo.BaseRequest
 import com.antoniocostadossantos.githubapirepositories.model.repo.Item
+import com.antoniocostadossantos.githubapirepositories.model.user.User
 import com.antoniocostadossantos.githubapirepositories.repository.MainRepository
 import com.antoniocostadossantos.githubapirepositories.util.StateResource
 import kotlinx.coroutines.Dispatchers
@@ -31,6 +32,9 @@ class MainViewModel(private val mainRepository: MainRepository) : ViewModel() {
 
     private val _repoLicense = MutableLiveData<StateResource<LicenseRequest>>()
     val repoLicense: LiveData<StateResource<LicenseRequest>> = _repoLicense
+
+    private val _users = MutableLiveData<StateResource<User>>()
+    val users: LiveData<StateResource<User>> = _users
 
     fun getAllRepositories(
         language: String,
@@ -85,6 +89,15 @@ class MainViewModel(private val mainRepository: MainRepository) : ViewModel() {
             repositoryName = repositoryName
         )
         _repoLicense.postValue(handleResponse(response))
+    }
+
+    fun getUser(
+        owner: String,
+    ) = viewModelScope.launch(Dispatchers.IO) {
+        val response = mainRepository.getUser(
+            owner = owner
+        )
+        _users.postValue(handleResponse(response))
     }
 
     private fun <T> handleResponse(response: Response<T>): StateResource<T> {
