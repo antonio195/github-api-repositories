@@ -1,38 +1,35 @@
 package com.antoniocostadossantos.githubapirepositories.ui.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.antoniocostadossantos.githubapirepositories.databinding.ItemIssueBinding
-import com.antoniocostadossantos.githubapirepositories.model.issues.IssuesItem
+import com.antoniocostadossantos.githubapirepositories.model.issues.IssuesItemResponse
 
 class IssuesAdapter(
-    private val context: Context,
-    val accessIssueClick: (IssuesItem) -> Unit,
+    val accessIssueClick: (IssuesItemResponse) -> Unit,
 ) :
-    RecyclerView.Adapter<IssueViewHolder>() {
-
-    private var items = mutableListOf<IssuesItem>()
+    ListAdapter<IssuesItemResponse, IssueViewHolder>(IssuesDiffUtil()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IssueViewHolder {
-        val binding = ItemIssueBinding.inflate(LayoutInflater.from(context), parent, false)
+        val binding = ItemIssueBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return IssueViewHolder(binding)
     }
 
-    override fun getItemCount() = items.size
-
     override fun onBindViewHolder(holder: IssueViewHolder, position: Int) {
-        holder.bind(items[position])
+        holder.bind(currentList[position])
 
         holder.repoIssueAcessBtn.setOnClickListener {
-            accessIssueClick(items[position])
+            accessIssueClick(currentList[position])
         }
     }
 
-    fun setItems(list: List<IssuesItem>) {
-        items = list.toMutableList()
-        notifyDataSetChanged()
+    fun updateData(newList: List<IssuesItemResponse>) {
+        val combinedList = ArrayList(currentList)
+        combinedList.addAll(newList)
+        submitList(combinedList)
     }
 }
 
@@ -44,10 +41,27 @@ class IssueViewHolder(binding: ItemIssueBinding) : RecyclerView.ViewHolder(bindi
     val issueCreate = binding.repositoryIssueCreated
     val repoIssueAcessBtn = binding.repositoryBtnAcessIssue
 
-    fun bind(item: IssuesItem) {
+    fun bind(item: IssuesItemResponse) {
         issueTitle.text = item.title
         issueAuthor.text = item.user.login
         issueState.text = item.state
-        issueCreate.text = item.created_at
+        issueCreate.text = item.createdAt
     }
+}
+
+class IssuesDiffUtil : DiffUtil.ItemCallback<IssuesItemResponse>() {
+    override fun areItemsTheSame(
+        oldItem: IssuesItemResponse,
+        newItem: IssuesItemResponse
+    ): Boolean {
+        return oldItem.id == newItem.id
+    }
+
+    override fun areContentsTheSame(
+        oldItem: IssuesItemResponse,
+        newItem: IssuesItemResponse
+    ): Boolean {
+        return oldItem.htmlUrl == newItem.htmlUrl
+    }
+
 }

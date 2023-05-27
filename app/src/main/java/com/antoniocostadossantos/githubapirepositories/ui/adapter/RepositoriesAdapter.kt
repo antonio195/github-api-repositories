@@ -1,52 +1,37 @@
 package com.antoniocostadossantos.githubapirepositories.ui.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.antoniocostadossantos.githubapirepositories.databinding.ItemRepositoryBinding
-import com.antoniocostadossantos.githubapirepositories.model.repo.Item
-import com.antoniocostadossantos.githubapirepositories.util.MyDiffUtilCallback
+import com.antoniocostadossantos.githubapirepositories.model.repo.ItemResponse
 
 class RepositoriesAdapter(
-    private val context: Context,
-    val itemClick: (Item) -> Unit,
+    val itemClick: (ItemResponse) -> Unit,
 ) :
-    RecyclerView.Adapter<RepositoryViewHolder>() {
-
-    private var items = mutableListOf<Item>()
+    ListAdapter<ItemResponse, RepositoryViewHolder>(RepositoryDiffUtil()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RepositoryViewHolder {
-        val binding = ItemRepositoryBinding.inflate(LayoutInflater.from(context), parent, false)
+        val binding =
+            ItemRepositoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return RepositoryViewHolder(binding)
     }
 
-    override fun getItemCount() = items.size
-
     override fun onBindViewHolder(holder: RepositoryViewHolder, position: Int) {
-        holder.bind(items[position])
+        holder.bind(currentList[position])
 
         holder.itemView.setOnClickListener {
-            itemClick(items[position])
+            itemClick(currentList[position])
         }
     }
 
-    fun clearItems() {
-        items.clear()
-    }
-
-    fun updateData(newList: List<Item>) {
-        val diffResult = DiffUtil.calculateDiff(MyDiffUtilCallback(items, newList))
-        items.addAll(newList)
-        diffResult.dispatchUpdatesTo(this)
-        notifyDataSetChanged()
-    }
-
-    fun setItems(list: List<Item>) {
-        items.addAll(list.toMutableList())
-        notifyItemRangeInserted(items.lastIndex, list.size)
+    fun updateData(newList: List<ItemResponse>) {
+        val combinedList = ArrayList(currentList)
+        combinedList.addAll(newList)
+        submitList(combinedList)
     }
 }
 
@@ -58,12 +43,22 @@ class RepositoryViewHolder(binding: ItemRepositoryBinding) : RecyclerView.ViewHo
     val repoStarsCount = binding.repositoryStars
     val repoForksCount = binding.repositoryForks
 
-    fun bind(item: Item) {
-        repoImage.load(item.owner.avatar_url)
+    fun bind(item: ItemResponse) {
+        repoImage.load(item.owner.avatarUrl)
         repoName.text = item.name
         repoAuthor.text = item.owner.login
-        repoStarsCount.text = item.stargazers_count.toString()
-        repoForksCount.text = item.forks_count.toString()
+        repoStarsCount.text = item.starsCount.toString()
+        repoForksCount.text = item.forksCount.toString()
+    }
+}
+
+class RepositoryDiffUtil : DiffUtil.ItemCallback<ItemResponse>() {
+    override fun areItemsTheSame(oldItem: ItemResponse, newItem: ItemResponse): Boolean {
+        return oldItem.name == newItem.name
+    }
+
+    override fun areContentsTheSame(oldItem: ItemResponse, newItem: ItemResponse): Boolean {
+        return oldItem.name == newItem.name
     }
 
 }

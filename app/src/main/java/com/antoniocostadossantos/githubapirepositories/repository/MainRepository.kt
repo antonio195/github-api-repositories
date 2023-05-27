@@ -1,16 +1,13 @@
 package com.antoniocostadossantos.githubapirepositories.repository
 
-import com.antoniocostadossantos.githubapirepositories.remote.RetrofitClient
 import com.antoniocostadossantos.githubapirepositories.remote.api.GithubAPI
 
-class MainRepository {
-
-    private val retrofitClient = RetrofitClient.getService(GithubAPI::class.java)
+class MainRepository(private val githubAPI: GithubAPI) {
 
     suspend fun getRepositories(
         language: String,
         page: Int,
-    ) = retrofitClient.getRepositories(
+    ) = githubAPI.getRepositories(
         language = language,
         page = page,
         perPage = 20
@@ -19,38 +16,42 @@ class MainRepository {
     suspend fun getRepository(
         owner: String,
         repositoryName: String
-    ) = retrofitClient.getRepository(
+    ) = githubAPI.getRepository(
         owner = owner,
         repositoryName = repositoryName
     )
 
     suspend fun getCommits(
         owner: String,
-        repositoryName: String
-    ) = retrofitClient.getCommits(
+        repositoryName: String,
+        page: Int
+    ) = githubAPI.getCommits(
         owner = owner,
-        repositoryName = repositoryName
+        repositoryName = repositoryName,
+        page = page
     )
 
     suspend fun getIssues(
         owner: String,
-        repositoryName: String
-    ) = retrofitClient.getIssues(
+        repositoryName: String,
+        page: Int
+    ) = githubAPI.getIssues(
         owner = owner,
-        repositoryName = repositoryName
+        repositoryName = repositoryName,
+        page = page
     )
 
     suspend fun getLicense(
         owner: String,
         repositoryName: String
-    ) = retrofitClient.getLicense(
+    ) = githubAPI.getLicense(
         owner = owner,
         repositoryName = repositoryName
     )
 
     suspend fun getUser(
         owner: String,
-    ) = retrofitClient.getUser(
+    ) = githubAPI.getUser(
         owner = owner,
     )
 

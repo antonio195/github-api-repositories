@@ -1,38 +1,35 @@
 package com.antoniocostadossantos.githubapirepositories.ui.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.antoniocostadossantos.githubapirepositories.databinding.ItemCommitBinding
-import com.antoniocostadossantos.githubapirepositories.model.commit.CommitItem
+import com.antoniocostadossantos.githubapirepositories.model.commit.CommitItemResponse
 
 class CommitsAdapter(
-    private val context: Context,
-    val acessCommitClick: (CommitItem) -> Unit,
+    val acessCommitClick: (CommitItemResponse) -> Unit,
 ) :
-    RecyclerView.Adapter<CommitsViewHolder>() {
-
-    private var items = mutableListOf<CommitItem>()
+    ListAdapter<CommitItemResponse, CommitsViewHolder>(CommitDiffUtil()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommitsViewHolder {
-        val binding = ItemCommitBinding.inflate(LayoutInflater.from(context), parent, false)
+        val binding = ItemCommitBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return CommitsViewHolder(binding)
     }
 
-    override fun getItemCount() = items.size
-
     override fun onBindViewHolder(holder: CommitsViewHolder, position: Int) {
-        holder.bind(items[position])
+        holder.bind(currentList[position])
 
         holder.repoCommitAcessBtn.setOnClickListener {
-            acessCommitClick(items[position])
+            acessCommitClick(currentList[position])
         }
     }
 
-    fun setItems(list: List<CommitItem>) {
-        items = list.toMutableList()
-        notifyDataSetChanged()
+    fun updateData(newList: List<CommitItemResponse>) {
+        val combinedList = ArrayList(currentList)
+        combinedList.addAll(newList)
+        submitList(combinedList)
     }
 }
 
@@ -43,10 +40,27 @@ class CommitsViewHolder(binding: ItemCommitBinding) : RecyclerView.ViewHolder(bi
     val repoCommitCreate = binding.repositoryCommitCreated
     val repoCommitAcessBtn = binding.repositoryBtnAcessCommit
 
-    fun bind(item: CommitItem) {
+    fun bind(item: CommitItemResponse) {
         repoAuthor.text = item.commit.author.name
         repoCommitCreate.text = item.commit.author.date
         repoCommitMessage.text = item.commit.message
+    }
+
+}
+
+class CommitDiffUtil : DiffUtil.ItemCallback<CommitItemResponse>() {
+    override fun areItemsTheSame(
+        oldItem: CommitItemResponse,
+        newItem: CommitItemResponse
+    ): Boolean {
+        return oldItem.htmlUrl == newItem.htmlUrl
+    }
+
+    override fun areContentsTheSame(
+        oldItem: CommitItemResponse,
+        newItem: CommitItemResponse
+    ): Boolean {
+        return oldItem.htmlUrl == newItem.htmlUrl
     }
 
 }

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.fragments.DescriptionRepositoryFragment">
+    tools:context=".ui.fragments.descriptionFragment.DescriptionRepositoryFragment">
 
     <TextView
         android:id="@+id/repository_name"
@@ -31,12 +31,12 @@
         android:ellipsize="end"
         android:fontFamily="@font/montserrat_medium"
         android:maxLines="2"
-        android:text="square/http"
         android:textSize="16sp"
         app:layout_constraintEnd_toStartOf="@id/repository_image"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/repository_name" />
+        app:layout_constraintTop_toBottomOf="@id/repository_name"
+        tools:text="square/http" />
 
     <ImageView
         android:id="@+id/repository_image"
@@ -67,6 +67,7 @@
         android:layout_marginTop="8dp"
         android:ellipsize="end"
         android:fontFamily="@font/montserrat"
+        android:maxLines="4"
         android:textAlignment="textStart"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -80,7 +81,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:fontFamily="@font/montserrat"
-        android:text="@string/repository_score"
+        tools:text="@string/repository_score"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/repository_about" />
@@ -92,7 +93,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:fontFamily="@font/montserrat"
-        android:text="@string/repository_watchers"
+        tools:text="@string/repository_watchers"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/repository_about" />
@@ -104,7 +105,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:fontFamily="@font/montserrat"
-        android:text="@string/repository_open_issues"
+        tools:text="@string/repository_open_issues"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/repository_score" />
@@ -116,7 +117,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:fontFamily="@font/montserrat"
-        android:text="@string/repository_stars"
+        tools:text="@string/repository_stars"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/repository_watchers" />

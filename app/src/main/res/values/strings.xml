@@ -6,7 +6,7 @@
     <string name="stars">Stars: %s</string>
     <string name="forks">Forks: %s</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="repository_score">Score: %s</string>
+    <string name="repository_score">Score: %.2f</string>
     <string name="repository_watchers">Watchers: %s</string>
     <string name="repository_open_issues">Open issues: %s</string>
     <string name="repository_stars">Stars: %s</string>

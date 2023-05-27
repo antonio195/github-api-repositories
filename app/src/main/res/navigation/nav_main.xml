@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/home_menu"
-        android:name="com.antoniocostadossantos.githubapirepositories.ui.fragments.HomeFragment"
+        android:name="com.antoniocostadossantos.githubapirepositories.ui.fragments.homeFragment.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home">
         <action
@@ -17,27 +17,27 @@
 
     <fragment
         android:id="@+id/search_user_menu"
-        android:name="com.antoniocostadossantos.githubapirepositories.ui.fragments.SearchUserFragment"
+        android:name="com.antoniocostadossantos.githubapirepositories.ui.fragments.searchUserFragment.SearchUserFragment"
         android:label="fragment_search_user"
         tools:layout="@layout/fragment_search_user" />
     <fragment
         android:id="@+id/fragment_commits"
-        android:name="com.antoniocostadossantos.githubapirepositories.ui.fragments.CommitsFragment"
+        android:name="com.antoniocostadossantos.githubapirepositories.ui.fragments.commitsFragment.CommitsFragment"
         android:label="fragment_commits"
         tools:layout="@layout/fragment_commits" />
     <fragment
         android:id="@+id/fragment_issues"
-        android:name="com.antoniocostadossantos.githubapirepositories.ui.fragments.IssuesFragment"
+        android:name="com.antoniocostadossantos.githubapirepositories.ui.fragments.issuesFragment.IssuesFragment"
         android:label="fragment_issues"
         tools:layout="@layout/fragment_issues" />
     <fragment
         android:id="@+id/fragment_license"
-        android:name="com.antoniocostadossantos.githubapirepositories.ui.fragments.LicenseFragment"
+        android:name="com.antoniocostadossantos.githubapirepositories.ui.fragments.licenseFragment.LicenseFragment"
         android:label="fragment_license"
         tools:layout="@layout/fragment_license" />
     <fragment
         android:id="@+id/fragment_description_repository"
-        android:name="com.antoniocostadossantos.githubapirepositories.ui.fragments.DescriptionRepositoryFragment"
+        android:name="com.antoniocostadossantos.githubapirepositories.ui.fragments.descriptionFragment.DescriptionRepositoryFragment"
         android:label="fragment_description_repository"
         tools:layout="@layout/fragment_description_repository">
         <argument

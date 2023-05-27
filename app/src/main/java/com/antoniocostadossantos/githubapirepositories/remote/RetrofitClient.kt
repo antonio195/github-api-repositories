@@ -8,17 +8,16 @@ import retrofit2.converter.gson.GsonConverterFactory
 class RetrofitClient {
     companion object {
 
-        private val retrofit by lazy {
-
+        fun getRetrofitInstance(): Retrofit {
             val gson = GsonBuilder().setLenient().create()
 
-            Retrofit.Builder()
+            return Retrofit.Builder()
                 .baseUrl(URL_BASE)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build()
         }
 
-        fun <T> getService(serviceClass: Class<T>): T {
+        fun <T> getService(serviceClass: Class<T>, retrofit: Retrofit): T {
             return retrofit.create(serviceClass)
         }
 
