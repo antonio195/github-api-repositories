@@ -35,8 +35,7 @@
             android:id="@+id/search_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/input_label_search"
-            android:text="antonio195" />
+            android:hint="@string/input_label_search" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.recyclerview.widget.RecyclerView
